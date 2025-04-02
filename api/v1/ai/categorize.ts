@@ -18,7 +18,7 @@ export async function handler(event) {
 
     const response = await ai.responses.create({
         model: "gpt-4o",
-        input: `I have following categories as expense types: ${categories} please identify the category to the expense with note: ${note} and return only one string the category without quotes!`
+        input: `I have following categories of expenses: ${categories} please choose one for the following expense with note: ${note}. Then return only one string the category without quotes!`
     });
 
     return {
