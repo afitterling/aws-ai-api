@@ -1,4 +1,4 @@
-# aws-api2
+# aws-api2; an AI API
 
 Sample-Call:
 ```
