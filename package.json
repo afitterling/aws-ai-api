@@ -1,0 +1,25 @@
+{
+  "name": "aws-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sso": "aws sso login --sso-session=alex1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.540.0",
+    "@aws-sdk/s3-request-presigner": "^3.540.0",
+    "dayjs": "^1.11.13",
+    "lodash": "^4.17.21",
+    "openai": "^4.91.1",
+    "sst": "^3.10.0"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-dynamodb": "^3.515.0",
+    "@types/aws-lambda": "8.10.142"
+  }
+}
