@@ -13,7 +13,8 @@ export async function handler(event) {
     //console.log(id, userId);
 
     const response = await ai.responses.create({
-        model: "gpt-4o",
+        //model: "gpt-4o",
+        model: "o3-mini",
         input: "Write a one-sentence bedtime story about a unicorn.",
     });
 
