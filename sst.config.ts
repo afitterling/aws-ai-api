@@ -7,7 +7,7 @@ import { ApiStack } from "./stacks/Api";
 export default $config({
   app(input) {
     return {
-      name: "aws-api",
+      name: "aws-api-ai",
       removal: input?.stage === "production" ? "retain" : "remove",
       home: "aws",
       providers: {
