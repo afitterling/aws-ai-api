@@ -19,6 +19,10 @@ export function ApiStack({ OPEN_AI_SECRET }) {
         handler: "api/ai/v1/expenses/categorize20250404.handler",
     });
 
+    api.route("POST /api/v1/ai/costsaving1", {
+        handler: "api/ai/v1/expenses/costSavings1.handler",
+    });
+
     api.route("POST /api/v1/ai/activity/by_mood", {
         handler: "api/ai/v1/activities/findActivityByMood.handler",
     });
