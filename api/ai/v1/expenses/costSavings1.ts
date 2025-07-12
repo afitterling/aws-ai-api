@@ -6,12 +6,13 @@ export async function handler(event) {
         apiKey: Resource.OPEN_AI_SECRET.value,
     });
 
-    const { categories } = JSON.parse(event.body);
+    const { categories, expenses } = JSON.parse(event.body);
     console.log(categories);
 
     const prompt = `
-I have the following categories over time keys are years and subkeys are months of expenses summed up in categories: ${categories}.
-Return 4-5 personalized money-saving tips as an HTML string.
+I have the following categories with spendings per category: ${categories}.
+I have the following expenses per day: ${expenses}
+Return 4 personalized money-saving tips as an HTML string enumber them.
 Each tip should be in a separate <div> element.
 Highlight the most relevant category word(s) in each tip using <strong> tags.
 
