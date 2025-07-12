@@ -7,28 +7,36 @@ export async function handler(event) {
     });
 
     const { categories } = JSON.parse(event.body);
+    console.log(categories);
 
     const prompt = `
-I have the following categories of expenses: ${categories}.
-Return 5 money-saving tips as an HTML string.
+I have the following categories over time keys are years and subkeys are months of expenses summed up in categories: ${categories}.
+Return 4-5 personalized money-saving tips as an HTML string.
 Each tip should be in a separate <div> element.
 Highlight the most relevant category word(s) in each tip using <strong> tags.
 
 Do not explain anything. Do not wrap the HTML in triple backticks or markdown. Only return plain HTML.
 `;
 
-    const response = await ai.chat.completions.create({
+    const response = await ai.responses.create({
         model: "gpt-4o",
-        messages: [
+        input: [
             {
                 role: "user",
                 content: prompt
             }
         ],
-        temperature: 0.7,
+        text: {
+            "format": {
+                "type": "text",
+            }
+        }
+
     });
 
-    const tipsHtml = response.choices[0].message.content?.trim();
+    console.log(response);
+
+    const tipsHtml = response.output_text;
 
     return {
         statusCode: 200,
