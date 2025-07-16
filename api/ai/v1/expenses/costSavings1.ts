@@ -10,11 +10,11 @@ export async function handler(event) {
     console.log(categories);
 
     const prompt = `
-I have the following categories with spendings per category: ${categories}.
-I have the following expenses per day: ${expenses}
-Return 4 personalized money-saving tips as an HTML string enumber them.
-Each tip should be in a separate <div> element.
-Highlight the most relevant category word(s) in each tip using <strong> tags.
+I have the following categories expenses of current month: ${categories} and
+I have the following past single expenses: ${expenses}
+Return 5 personalized money-saving tips as an HTML string enumber them with 1-5.
+Each tip should be in a separate <div> element and start with a number.
+Highlight the most relevant meaning in each tip using <strong> tags.
 
 Do not explain anything. Do not wrap the HTML in triple backticks or markdown. Only return plain HTML.
 `;
