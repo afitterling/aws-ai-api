@@ -29,6 +29,7 @@ export function ApiStack({ OPEN_AI_SECRET }) {
 
     api.route("POST /api/v1/budget/savingtips", {
         handler: "api/ai/v1/budget/budgetTipps20250825-001.handler",
+        timeout: "180 seconds",
     });
 
 }
