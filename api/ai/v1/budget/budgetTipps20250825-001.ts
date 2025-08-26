@@ -1,8 +1,10 @@
 import OpenAI from "openai";
 import { Resource } from "sst";
 import { translate } from "../../../../utils/i18n";
+import { readUserContent, upsertUserContent } from "../../../../services/db/ops/upsertCache";
 
 const ai = new OpenAI({ apiKey: Resource.OPEN_AI_SECRET.value });
+const userId = "FAKE_USER_XYZ";
 
 export async function handler(event) {
     const { expenses } = JSON.parse(event.body);
@@ -17,6 +19,23 @@ export async function handler(event) {
 
     const spendings_considered = spendings !== null && Number.isFinite(Number(spendings)) ? Number(spendings) : 100;
     console.log(spendings_considered);
+
+    // check cache
+    const cached = await readUserContent(userId);
+
+    if (cached) {
+        const updatedAt = new Date(cached.updatedAt).getTime();
+        const now = Date.now();
+        const eightHours = 8 * 60 * 60 * 1000;
+
+        if (now - updatedAt < eightHours) {
+            console.log("Cache hit:", cached);
+            return {
+                statusCode: 200,
+                body: JSON.stringify(cached),
+            };
+        }
+    }
 
     const expenses_ = (Array.isArray(expenses) ? expenses : [])
         .map((expense) => ({
@@ -97,6 +116,14 @@ Each tip should be realistic, concise (max 1 sentences), and help the user save 
     const clean = Array.from(new Set(tips.map((t) => t.trim())))
         .map((t) => t.replace(/\s+/g, " "))
         .slice(0, tips_range);
+
+
+    // write cache
+    await upsertUserContent({
+        userId: userId,
+        type: "budget_tips",
+        content: JSON.stringify({ tips: clean }),
+    });
 
     return {
         statusCode: 200,

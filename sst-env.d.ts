@@ -5,6 +5,10 @@
 
 declare module "sst" {
   export interface Resource {
+    "CacheTable": {
+      "name": string
+      "type": "sst.aws.Dynamo"
+    }
     "MyApi": {
       "type": "sst.aws.ApiGatewayV2"
       "url": string

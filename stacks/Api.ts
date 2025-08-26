@@ -1,4 +1,4 @@
-export function ApiStack({ OPEN_AI_SECRET }) {
+export function ApiStack({ OPEN_AI_SECRET, cache }) {
     // Create Api
 
     const api = new sst.aws.ApiGatewayV2("MyApi",
@@ -11,7 +11,7 @@ export function ApiStack({ OPEN_AI_SECRET }) {
                     "http://localhost:5173",
                 ],
  */            },
-            link: [OPEN_AI_SECRET],
+            link: [OPEN_AI_SECRET, cache],
         }
     );
 
@@ -30,6 +30,7 @@ export function ApiStack({ OPEN_AI_SECRET }) {
     api.route("POST /api/v1/budget/savingtips", {
         handler: "api/ai/v1/budget/budgetTipps20250825-001.handler",
         timeout: "180 seconds",
+        link: [cache],
     });
 
 }
