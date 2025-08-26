@@ -13,6 +13,7 @@ export async function handler(event) {
     const numStr = qs.get("num");
     const spendings = qs.get("spendings");
     const timecached = qs.get("timecached");
+    const cacheseg = qs.get("cacheseg");
 
     const num =
         numStr !== null && Number.isFinite(Number(numStr)) ? Number(numStr) : 5;
@@ -21,10 +22,15 @@ export async function handler(event) {
     const spendings_considered = spendings !== null && Number.isFinite(Number(spendings)) ? Number(spendings) : 100;
 
     const outdated = timecached !== null && Number.isFinite(Number(timecached)) ? Number(timecached) * 1000 * 60 /*minutes*/ : 60 * 1000 * 60;
-    console.log("cache outdated", { userId, outdated });
+
+    const cachesegment = cacheseg ? "#" + cacheseg : "";
+
+    const key = userId + cachesegment;
+    const cached = await readUserContent(key);
+
+    console.log("cache outdated", { userId, outdated, cachesegment, key });
 
     // check cache
-    const cached = await readUserContent(userId);
 
     if (cached) {
         const updatedAt = new Date(cached.updatedAt).getTime();
@@ -122,12 +128,12 @@ Each tip should be realistic, concise (max 1 sentences), and help the user save 
 
     // write cache
     await upsertUserContent({
-        userId: userId,
+        userId: key,
         type: "budget_tips",
         content: JSON.stringify({ tips: clean }),
     });
 
-    console.log("Cache updated:", { userId, tips: clean });
+    console.log("Cache updated:", { key, tips: clean });
 
     return {
         statusCode: 200,
