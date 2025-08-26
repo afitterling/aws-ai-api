@@ -18,7 +18,6 @@ export async function handler(event) {
     const tips_range = num;
 
     const spendings_considered = spendings !== null && Number.isFinite(Number(spendings)) ? Number(spendings) : 100;
-    console.log(spendings_considered);
 
     // check cache
     const cached = await readUserContent(userId);
@@ -26,13 +25,13 @@ export async function handler(event) {
     if (cached) {
         const updatedAt = new Date(cached.updatedAt).getTime();
         const now = Date.now();
-        const eightHours = 8 * 60 * 60 * 1000;
+        const outdated = 10 * 1000;
 
-        if (now - updatedAt < eightHours) {
+        if (now - updatedAt < outdated) {
             console.log("Cache hit:", cached);
             return {
                 statusCode: 200,
-                body: JSON.stringify(cached),
+                body: JSON.stringify(JSON.parse(cached.content)),
             };
         }
     }
@@ -124,6 +123,8 @@ Each tip should be realistic, concise (max 1 sentences), and help the user save 
         type: "budget_tips",
         content: JSON.stringify({ tips: clean }),
     });
+
+    console.log("Cache updated:", { userId, tips: clean });
 
     return {
         statusCode: 200,
