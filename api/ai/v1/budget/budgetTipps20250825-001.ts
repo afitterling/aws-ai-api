@@ -12,6 +12,7 @@ export async function handler(event) {
     const qs = new URLSearchParams(event.rawQueryString || "");
     const numStr = qs.get("num");
     const spendings = qs.get("spendings");
+    const timecached = qs.get("timecached");
 
     const num =
         numStr !== null && Number.isFinite(Number(numStr)) ? Number(numStr) : 5;
@@ -19,13 +20,15 @@ export async function handler(event) {
 
     const spendings_considered = spendings !== null && Number.isFinite(Number(spendings)) ? Number(spendings) : 100;
 
+    const outdated = timecached !== null && Number.isFinite(Number(timecached)) ? Number(timecached) * 1000 * 60 /*minutes*/ : 60 * 1000 * 60;
+    console.log("cache outdated", { userId, outdated });
+
     // check cache
     const cached = await readUserContent(userId);
 
     if (cached) {
         const updatedAt = new Date(cached.updatedAt).getTime();
         const now = Date.now();
-        const outdated = 10 * 1000;
 
         if (now - updatedAt < outdated) {
             console.log("Cache hit:", cached);
