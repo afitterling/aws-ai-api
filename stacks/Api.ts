@@ -33,4 +33,10 @@ export function ApiStack({ OPEN_AI_SECRET, cache }) {
         link: [cache],
     });
 
+    api.route("POST /api/v1/food/recepis/prepare", {
+        handler: "api/ai/v1/food/receipes/receipt.handler",
+        timeout: "180 seconds",
+        link: [cache],
+    });
+
 }

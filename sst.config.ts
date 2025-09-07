@@ -28,6 +28,7 @@ export default $config({
 
     ApiStack({ OPEN_AI_SECRET, cache });
 
+    return { cache: cache.name }
     //MyBucket();
   },
 });
