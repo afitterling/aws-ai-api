@@ -3,10 +3,11 @@ import { Resource } from "sst";
 import { readUserContent, upsertUserContent } from "../../../../../services/db/ops/upsertCache";
 
 const ai = new OpenAI({ apiKey: Resource.OPEN_AI_SECRET.value });
-const userId = "FAKE_USER_XYZ";
 
 export async function handler(event) {
     const { ingredients, style, daytime } = JSON.parse(event.body);
+    const claims = event.requestContext.authorizer.jwt.claims;
+    const userId = claims.sub;
 
     console.log("ingredients", ingredients);
     console.log("style", style);

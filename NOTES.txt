@@ -1,0 +1,4 @@
+stages:
+- dev
+- staging authorized
+
